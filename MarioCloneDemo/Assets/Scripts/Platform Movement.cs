@@ -4,33 +4,34 @@ using UnityEngine;
 
 public class PlatformMovement : MonoBehaviour
 {
-    [SerializeField] float moveSpeed;
-    private Rigidbody2D platform;
-    private int timer;
+    private float startLocation;
+    private float endLocation;
+    [SerializeField] float distance;
+    private Vector3 direction = Vector3.up;
+    [SerializeField] float speed;
     // Start is called before the first frame update
     void Start()
     {
-        platform = GetComponent<Rigidbody2D>();
+        startLocation = transform.position.y;
+
+        endLocation = startLocation + distance;
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
-        timer += 1;
+        transform.Translate(direction * speed * Time.deltaTime);
+
+        if(transform.position.y >= endLocation)
+        {
+            direction = Vector3.down;
+        }
+        else if (transform.position.y <= startLocation)
+        {
+            direction = Vector3.up;
+        }
     }
 
-    private void Move()
-    {
-        while (timer < 5)
-        {
-            transform.Translate(Vector2.up * moveSpeed * Time.deltaTime);
-     
-        }
-        while(timer > 5)
-        {
-            transform.Translate(Vector2.down * moveSpeed * Time.deltaTime);
-        }
-        
-    }
+    
 }
